@@ -4,10 +4,11 @@ REGION=$1
 
 if [ -z $REGION ]; then echo "Usage: $(basename "$0") <REGION>" && exit 0; fi
 
-channels=$(aws kinesisvideo list-signaling-channels --region eu-west-1 | jq -r '.[][].ChannelARN')
+#return sorted data by CreationTime - ascending
+channels=$(aws kinesisvideo list-signaling-channels --region $REGION | jq -r '.[] |= sort_by(.CreationTime)' | jq -r '.[][].ChannelARN')
 
 echo "Total channels to delete:"
-echo $(aws kinesisvideo list-signaling-channels --region eu-west-1 | jq -r '.[][].ChannelARN' | wc -l)
+echo $(aws kinesisvideo list-signaling-channels --region $REGION | jq -r '.[][].ChannelARN' | wc -l)
 
 STATUS=0
 for channel in ${channels[@]}; do
