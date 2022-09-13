@@ -17,7 +17,7 @@ for channel in ${channels[@]}; do
 		echo "Deleted channel $channel successfully"
 	else
 		echo "Failed to delete channel"
-		STATUS=$? && exit 1
+		STATUS=$?
 	fi
 done
 
